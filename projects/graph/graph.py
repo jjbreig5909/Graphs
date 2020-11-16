@@ -65,13 +65,10 @@ class Graph:
 
             if current_node not in visited:
                 visited.append(current_node)
-
-            if current_node not in self.vertices:
-                continue
                 
-            neighbors = self.get_neighbors(current_node)
-            for neighbor in neighbors:
-                stack.append(neighbor)
+                neighbors = self.get_neighbors(current_node)
+                for neighbor in neighbors:
+                    stack.append(neighbor)
 
         return visited
 
