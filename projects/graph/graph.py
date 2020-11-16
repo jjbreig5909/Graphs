@@ -14,33 +14,66 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        self.vertex = vertex_id
+        self.vertices[vertex_id] = set()
+
+
 
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        self.vertices[v1].add(v2)
+
 
     def get_neighbors(self, vertex_id):
         """
         Get all neighbors (edges) of a vertex.
         """
-        pass  # TODO
+        return self.vertices[vertex_id]
 
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        q = Queue()
+        q.enqueue(starting_vertex)
+        visited = set()
+
+        while q.size() > 0:
+            current_node = q.dequeue()
+
+            if current_node not in visited:
+                visited.add(current_node)
+                neighbors = self.get_neighbors(current_node)
+                for neighbor in neighbors:
+                    q.enqueue(neighbor)
+        return visited
+
 
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        visited = []
+        stack = [starting_vertex]
+
+        while (len(stack) != 0):
+            current_node = stack.pop()
+
+            if current_node not in visited:
+                visited.append(current_node)
+
+            if current_node not in self.vertices:
+                continue
+                
+            neighbors = self.get_neighbors(current_node)
+            for neighbor in neighbors:
+                stack.append(neighbor)
+
+        return visited
 
     def dft_recursive(self, starting_vertex):
         """
@@ -119,7 +152,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    graph.bft(1)
+    print(graph.bft(1))
 
     '''
     Valid DFT paths:
@@ -128,7 +161,7 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    graph.dft(1)
+    print(graph.dft(1))
     graph.dft_recursive(1)
 
     '''
