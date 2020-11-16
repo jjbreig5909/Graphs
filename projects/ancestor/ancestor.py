@@ -30,18 +30,19 @@ class Graph:
 
 def earliest_ancestor(ancestors, starting_node):
 
-    family_tree =  Graph()
-
-    for pair in ancestors:
-        for ancestor in pair: 
-           family_tree.add_vertex(ancestor)
-           
-        family_tree.add_edge(pair[0], pair[1])
-
-    stack = [starting_node]
-    depth = {}
+    visited = []
+    for i in get_parents(ancestors,starting_node):
+        visited.append(i)
+    while len(visited) > 0:
+        node = visited.pop(0)
+        for i in get_parents(ancestors,node):
+            visited.append(i)
+        if len(visited) == 0:
+            return node
+    return -1
     
-    while len(stack) > 0:
-        current_node = stack.pop()
-        neighbors = family_tree.get_neighbors(current_node)
-        
+def get_parents(dataset, children):
+    parents = [node[0] for node in dataset if node[1] == children]
+    parents.sort(reverse= True)
+    return parents
+
