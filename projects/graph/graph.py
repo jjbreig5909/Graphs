@@ -86,20 +86,46 @@ class Graph:
 
 
     def bfs(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing the shortest path from
-        starting_vertex to destination_vertex in
-        breath-first order.
-        """
-        pass  # TODO
+        q = Queue()
+        visited = set()
+        q.enqueue([starting_vertex])
+
+        while q.size() > 0:
+            current_path = q.dequeue()
+            current_node = current_path[-1]
+
+            if current_node == destination_vertex:
+                return current_path
+
+            if current_node not in visited:
+                visited.add(current_node)
+                neighbors = self.get_neighbors(current_node)
+
+                for neighbor in neighbors:
+                    path_copy = current_path + [neighbor]
+                    q.enqueue(path_copy)
+
 
     def dfs(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing a path from
-        starting_vertex to destination_vertex in
-        depth-first order.
-        """
-        pass  # TODO
+        visited = []
+        stack = [starting_vertex]
+
+        while (len(stack) != 0):
+            
+            current_node = stack.pop()
+
+            if current_node == destination_vertex:
+                visited.append(current_node)
+                return visited
+
+            if current_node not in visited:
+                visited.append(current_node)
+                
+                neighbors = self.get_neighbors(current_node)
+                for neighbor in neighbors:
+                    stack.append(neighbor)
+
+        return visited
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
