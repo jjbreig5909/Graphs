@@ -127,15 +127,20 @@ class Graph:
 
         return visited
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing a path from
-        starting_vertex to destination_vertex in
-        depth-first order.
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited = []):
+        
+        if starting_vertex == destination_vertex:
+                visited.append(starting_vertex)
+                return visited
 
-        This should be done using recursion.
-        """
-        pass  # TODO
+        if starting_vertex not in visited:
+            visited.append(starting_vertex)
+
+            neighbors = self.get_neighbors(starting_vertex)
+            for neighbor in neighbors:
+                visited = self.dfs_recursive(neighbor, destination_vertex, visited)
+        
+        return visited
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
