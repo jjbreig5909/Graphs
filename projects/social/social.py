@@ -1,5 +1,18 @@
 import random
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -80,16 +93,17 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
-        stack = [user_id]
-        while (len(stack) != 0):
-            current_node = stack.pop()
+        q = Queue()
+        q.enqueue(user_id)
+        while q.size() > 0:
+            current_node = q.dequeue()
 
             if current_node not in visited:
-                visited.append(current_node)
-                
-                neighbors = sg.friendships[current_node]
+                visited[current_node] = [user_id]
+                neighbors = self.friendships[current_node]
                 for neighbor in neighbors:
-                    stack.append(neighbor)
+                    q.enqueue(neighbor)
+                    visited[current_node].append(neighbor)
 
         return visited
 
