@@ -1,4 +1,5 @@
 import random
+from typing import NewType
 
 class Queue():
     def __init__(self):
@@ -82,6 +83,25 @@ class SocialGraph:
         for friendship in friendships_to_make:
             self.add_friendship(friendship[0], friendship[1])
         
+    
+    def get_shortest_path(self, friendslist, start, end, shortestLength = -1, path=[]):
+        path = path + [start]
+        if start == end:
+            return path
+        if start not in friendslist:
+            return None
+        shortest = None
+
+        for friend in friendslist[start]:
+            if friend not in path:
+                if shortestLength == -1 or len(path)<(shortestLength-1):
+                    newPath = self.get_shortest_path(friendslist, friend, end, shortestLength, path)
+                    if newPath:
+                        if not shortest or len(newPath) < len(shortest):
+                            shortest = newPath
+                            shortestLength = len(newPath)
+        return shortest
+    
     def get_all_social_paths(self, user_id):
         """
         Takes a user's user_id as an argument
@@ -93,23 +113,27 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
-        q = Queue()
-        q.enqueue([user_id])
+        # q = Queue()
+        # q.enqueue([user_id])
 
-        while q.size() > 0:
-            current_path = q.dequeue()
-            current_node = current_path[-1]               
+        # while q.size() > 0:
+        #     current_path = q.dequeue()
+        #     current_node = current_path[-1]               
 
-            if current_node not in visited:
-                visited[current_node] = [user_id]
-                neighbors = self.friendships[current_node]
+        #     if current_node not in visited:
+        #         visited[current_node] = [user_id]
+        #         neighbors = self.friendships[current_node]
 
-                for neighbor in neighbors:
-                    path_copy = current_path + [neighbor]
-                    visited[neighbor] = path_copy
-                    q.enqueue(path_copy)
+        #         for neighbor in neighbors:
+        #             path_copy = current_path + [neighbor]
+        #             visited[neighbor] = path_copy
+        #             q.enqueue(path_copy)
 
-        return visited
+        for friend in self.friendships:
+            visited[friend] = self.get_shortest_path(self.friendships, user_id, friend)
+
+        new_visited = {k:v for k, v in visited.items() if v != None}
+        return new_visited
 
 if __name__ == '__main__':
     sg = SocialGraph()
