@@ -135,7 +135,6 @@ class Graph:
 
         if starting_vertex not in visited:
             visited.append(starting_vertex)
-
             neighbors = self.get_neighbors(starting_vertex)
             for neighbor in neighbors:
                 visited = self.dfs_recursive(neighbor, destination_vertex, visited)
