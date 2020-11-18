@@ -58,7 +58,7 @@ class SocialGraph:
         # Create friendships
         total_friendships = avg_friendships * num_users
         friendship_combos = []
-        
+
         for user_id in range(1, num_users + 1):
             for friend_id in range(user_id + 1, num_users + 1):
                 friendship_combos.append((user_id, friend_id))
@@ -80,8 +80,18 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
-        return visited
+        stack = [user_id]
+        while (len(stack) != 0):
+            current_node = stack.pop()
 
+            if current_node not in visited:
+                visited.append(current_node)
+                
+                neighbors = sg.friendships[current_node]
+                for neighbor in neighbors:
+                    stack.append(neighbor)
+
+        return visited
 
 if __name__ == '__main__':
     sg = SocialGraph()
